@@ -4,8 +4,9 @@ function Header({ cardCount, onNewCard }) {
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
-        <span className={styles.logo} aria-hidden="true">🃏</span>
-        <h1 className={styles.title}>FlashCard</h1>
+<h1 className={styles.title}>
+          Flash<span className={styles.titleAccent}>Card</span>
+        </h1>
       </div>
       <div className={styles.actions}>
         <span className={styles.badge} aria-live="polite">

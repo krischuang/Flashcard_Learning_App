@@ -1,24 +1,27 @@
 import { useState, useRef } from 'react';
 import styles from './Flashcard.module.css';
 
-const CATEGORY_COLORS = {
-  'General Knowledge': '#10b981',
-  Science: '#3b82f6',
-  Math: '#f59e0b',
-};
+const CARD_COLORS = [
+  '#fa0644', // red
+  '#fa5300', // orange
+  '#aa02ff', // purple
+  '#0071c9', // blue
+  '#304254', // dark navy
+  '#e2007a', // hot pink
+  '#00a896', // teal
+  '#f5a623', // amber
+];
 
-function Flashcard({ card, onEdit, onDiscard }) {
+function Flashcard({ card, colorIndex = 0, onEdit, onDiscard }) {
   const [flipped, setFlipped] = useState(false);
   const [disappearing, setDisappearing] = useState(false);
   const timerRef = useRef(null);
 
   const handleClick = (e) => {
-    // Ignore button clicks and ignore if already flipped/leaving
     if (e.target.closest('button')) return;
     if (flipped || disappearing) return;
 
     setFlipped(true);
-    // Give the user time to read the answer, then fade the card out
     timerRef.current = setTimeout(() => setDisappearing(true), 1500);
   };
 
@@ -29,7 +32,6 @@ function Flashcard({ card, onEdit, onDiscard }) {
     }
   };
 
-  // Called when the CSS fade-out animation finishes
   const handleAnimationEnd = () => {
     if (disappearing) {
       clearTimeout(timerRef.current);
@@ -37,7 +39,7 @@ function Flashcard({ card, onEdit, onDiscard }) {
     }
   };
 
-  const categoryColor = CATEGORY_COLORS[card.category] ?? '#6b7280';
+  const cardColor = CARD_COLORS[colorIndex % CARD_COLORS.length];
 
   return (
     <div
@@ -50,33 +52,28 @@ function Flashcard({ card, onEdit, onDiscard }) {
       aria-label={`Flashcard: ${card.question}. Press Enter or Space to flip.`}
     >
       <div className={`${styles.inner} ${flipped ? styles.flipped : ''}`}>
-        {/* ── Front ───────────────────────────────────────────────── */}
-        <div className={styles.front}>
-          <span className={styles.category} style={{ color: categoryColor }}>
-            {card.category}
-          </span>
-          <p className={styles.question}>{card.question}</p>
-          <div className={styles.frontFooter}>
+        {/* ── Front ─────────────────────────────────────────────── */}
+        <div className={styles.front} style={{ background: cardColor }}>
+          <div className={styles.topRow}>
+            <span className={styles.categoryTag}>{card.category}</span>
             <button
               className={styles.editBtn}
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(card);
-              }}
+              onClick={(e) => { e.stopPropagation(); onEdit(card); }}
               aria-label="Edit card"
               title="Edit"
             >
-              ✏️ Edit
+              ✎
             </button>
-            <span className={styles.hint}>Click to reveal</span>
           </div>
+          <p className={styles.question}>{card.question}</p>
+          <span className={styles.hint}>Tap to reveal →</span>
         </div>
 
-        {/* ── Back ────────────────────────────────────────────────── */}
-        <div className={styles.back}>
+        {/* ── Back ──────────────────────────────────────────────── */}
+        <div className={styles.back} style={{ background: cardColor }}>
           <p className={styles.answerLabel}>Answer</p>
           <p className={styles.answer}>{card.answer}</p>
-          <p className={styles.dismissHint}>Card will disappear shortly…</p>
+          <p className={styles.dismissHint}>Disappearing shortly…</p>
         </div>
       </div>
     </div>

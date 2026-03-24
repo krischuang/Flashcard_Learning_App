@@ -5,8 +5,7 @@ function FlashcardGrid({ cards, onEdit, onDiscard }) {
   if (cards.length === 0) {
     return (
       <div className={styles.empty} role="status">
-        <span className={styles.emptyIcon} aria-hidden="true">🃏</span>
-        <h3 className={styles.emptyTitle}>No cards found</h3>
+<h3 className={styles.emptyTitle}>No cards found</h3>
         <p className={styles.emptyText}>
           Try a different filter or click <strong>+ New Card</strong> to get started!
         </p>
@@ -16,8 +15,14 @@ function FlashcardGrid({ cards, onEdit, onDiscard }) {
 
   return (
     <div className={styles.grid}>
-      {cards.map((card) => (
-        <Flashcard key={card.id} card={card} onEdit={onEdit} onDiscard={onDiscard} />
+      {cards.map((card, index) => (
+        <Flashcard
+          key={card.id}
+          card={card}
+          colorIndex={index}
+          onEdit={onEdit}
+          onDiscard={onDiscard}
+        />
       ))}
     </div>
   );

@@ -1,66 +1,72 @@
 .header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0 32px;
-  height: 64px;
+  background: #fffefe;
+  padding: 28px 32px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .logo {
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1;
 }
 
 .title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1f2937;
+  font-size: 26px;
+  font-weight: 800;
+  color: #304254;
   margin: 0;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.titleAccent {
+  color: #fa0644;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .badge {
-  background: #ede9fe;
-  color: #4f46e5;
-  padding: 4px 12px;
-  border-radius: 20px;
+  background: #aa02ff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .newBtn {
-  background: #4f46e5;
+  background: #fa0644;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 800;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .newBtn:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
+  background: #d4003a;
+  transform: translateY(-2px);
 }
 
 .newBtn:active {
@@ -69,9 +75,12 @@
 
 @media (max-width: 480px) {
   .header {
-    padding: 0 16px;
+    padding: 20px 16px 16px;
   }
   .badge {
     display: none;
+  }
+  .title {
+    font-size: 20px;
   }
 }

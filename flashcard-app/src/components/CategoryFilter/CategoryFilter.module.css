@@ -1,35 +1,37 @@
 .filterBar {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 28px;
 }
 
 .pill {
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: 2px solid #e5e7eb;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 2px solid #e2e2e2;
   background: white;
-  color: #6b7280;
-  font-size: 13px;
-  font-weight: 500;
+  color: #777777;
+  font-size: 12px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .pill:hover {
-  border-color: #4f46e5;
-  color: #4f46e5;
+  border-color: #fa0644;
+  color: #fa0644;
 }
 
 .active {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: #fa0644;
+  border-color: #fa0644;
   color: white;
 }
 
 .active:hover {
-  background: #4338ca;
-  border-color: #4338ca;
+  background: #d4003a;
+  border-color: #d4003a;
   color: white;
 }
