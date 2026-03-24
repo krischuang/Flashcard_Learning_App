@@ -19,7 +19,6 @@
   bottom: 36px;
   left: 50%;
   transform: translateX(-50%);
-  background: #304254;
   color: white;
   padding: 12px 28px;
   border-radius: 50px;
@@ -31,6 +30,16 @@
   animation: toastIn 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Green background for successful operations */
+.success {
+  background: #00a896;
+}
+
+/* Red background for errors */
+.error {
+  background: #fa0644;
 }
 
 @keyframes toastIn {

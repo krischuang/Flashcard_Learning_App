@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styles from './ConfirmDialog.module.css';
 
-function ConfirmDialog({ onConfirm, onCancel }) {
+function ConfirmDialog({ loading, onConfirm, onCancel }) {
   const dialogRef = useRef(null);
 
   useEffect(() => {
@@ -40,11 +40,12 @@ function ConfirmDialog({ onConfirm, onCancel }) {
             data-cancel
             className={styles.cancelBtn}
             onClick={onCancel}
+            disabled={loading}
           >
             Cancel
           </button>
-          <button className={styles.confirmBtn} onClick={onConfirm}>
-            Delete
+          <button className={styles.confirmBtn} onClick={onConfirm} disabled={loading}>
+            {loading ? 'Deleting…' : 'Delete'}
           </button>
         </div>
       </div>

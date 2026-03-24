@@ -4,21 +4,25 @@ import * as api from '../services/api';
 export function useFlashcards() {
   const [cards, setCards] = useState([]);
   const [filter, setFilter] = useState('All');
+  const [loading, setLoading] = useState(false);
   const [modalState, setModalState] = useState({ open: false, mode: 'create', card: null });
   const [confirmState, setConfirmState] = useState({ open: false, cardId: null });
+  // toast is either null or { message, type } where type is 'success' | 'error'
   const [toast, setToast] = useState(null);
+
+  const showToast = useCallback((message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  }, []);
 
   // Load all cards once on mount; show error toast if the backend is unreachable
   useEffect(() => {
+    setLoading(true);
     api.getCards()
       .then(setCards)
-      .catch(() => showToast('Could not load cards — is the backend running?'));
+      .catch(() => showToast('Could not load cards — is the backend running?', 'error'))
+      .finally(() => setLoading(false));
   }, [showToast]);
-
-  const showToast = useCallback((message) => {
-    setToast(message);
-    setTimeout(() => setToast(null), 3000);
-  }, []);
 
   // ── Read ──────────────────────────────────────────────────────────────────
   const getFilteredCards = useCallback(() => {
@@ -29,13 +33,16 @@ export function useFlashcards() {
   // ── Create ────────────────────────────────────────────────────────────────
   const createCard = useCallback(
     async (data) => {
+      setLoading(true);
       try {
         const card = await api.createCard(data);
         setCards((prev) => [...prev, card]);
-        showToast('Card created!');
+        showToast('Card created!', 'success');
         setModalState({ open: false, mode: 'create', card: null });
       } catch (err) {
-        showToast(`Failed to create card: ${err.message}`);
+        showToast(`Failed to create card: ${err.message}`, 'error');
+      } finally {
+        setLoading(false);
       }
     },
     [showToast],
@@ -44,13 +51,16 @@ export function useFlashcards() {
   // ── Update ────────────────────────────────────────────────────────────────
   const updateCard = useCallback(
     async (id, data) => {
+      setLoading(true);
       try {
         const updated = await api.updateCard(id, data);
         setCards((prev) => prev.map((c) => (c.id === id ? updated : c)));
-        showToast('Card updated!');
+        showToast('Card updated!', 'success');
         setModalState({ open: false, mode: 'create', card: null });
       } catch (err) {
-        showToast(`Failed to update card: ${err.message}`);
+        showToast(`Failed to update card: ${err.message}`, 'error');
+      } finally {
+        setLoading(false);
       }
     },
     [showToast],
@@ -59,14 +69,17 @@ export function useFlashcards() {
   // ── Delete ────────────────────────────────────────────────────────────────
   const deleteCard = useCallback(
     async (id) => {
+      setLoading(true);
       try {
         await api.deleteCard(id);
         setCards((prev) => prev.filter((c) => c.id !== id));
-        showToast('Card deleted!');
+        showToast('Card deleted!', 'success');
         setConfirmState({ open: false, cardId: null });
       } catch (err) {
-        showToast(`Failed to delete card: ${err.message}`);
+        showToast(`Failed to delete card: ${err.message}`, 'error');
         setConfirmState({ open: false, cardId: null });
+      } finally {
+        setLoading(false);
       }
     },
     [showToast],
@@ -98,6 +111,7 @@ export function useFlashcards() {
     cards,
     filter,
     setFilter,
+    loading,
     modalState,
     confirmState,
     toast,

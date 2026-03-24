@@ -12,6 +12,7 @@ function App() {
     cards,
     filter,
     setFilter,
+    loading,
     modalState,
     confirmState,
     toast,
@@ -54,6 +55,7 @@ function App() {
         />
         <FlashcardGrid
           cards={filteredCards}
+          loading={loading}
           onEdit={openEditModal}
           onDelete={openConfirm}
         />
@@ -64,6 +66,7 @@ function App() {
           mode={modalState.mode}
           card={modalState.card}
           categories={categories}
+          loading={loading}
           onSubmit={handleModalSubmit}
           onClose={closeModal}
         />
@@ -71,14 +74,19 @@ function App() {
 
       {confirmState.open && (
         <ConfirmDialog
+          loading={loading}
           onConfirm={() => deleteCard(confirmState.cardId)}
           onCancel={closeConfirm}
         />
       )}
 
       {toast && (
-        <div className={styles.toast} role="status" aria-live="polite">
-          {toast}
+        <div
+          className={`${styles.toast} ${styles[toast.type]}`}
+          role="status"
+          aria-live="polite"
+        >
+          {toast.message}
         </div>
       )}
     </div>
