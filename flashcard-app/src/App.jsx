@@ -1,9 +1,10 @@
+import { useMemo } from 'react';
 import { useFlashcards } from './hooks/useFlashcards';
-import { CATEGORIES } from './utils/constants';
 import Header from './components/Header/Header';
 import CategoryFilter from './components/CategoryFilter/CategoryFilter';
 import FlashcardGrid from './components/FlashcardGrid/FlashcardGrid';
 import CardModal from './components/CardModal/CardModal';
+import ConfirmDialog from './components/ConfirmDialog/ConfirmDialog';
 import styles from './App.module.css';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     filter,
     setFilter,
     modalState,
+    confirmState,
     toast,
     getFilteredCards,
     createCard,
@@ -20,7 +22,15 @@ function App() {
     openCreateModal,
     openEditModal,
     closeModal,
+    openConfirm,
+    closeConfirm,
   } = useFlashcards();
+
+  // Derive categories dynamically from actual card data
+  const categories = useMemo(
+    () => [...new Set(cards.map((c) => c.category))].sort(),
+    [cards],
+  );
 
   const filteredCards = getFilteredCards();
 
@@ -38,14 +48,14 @@ function App() {
 
       <main className={styles.main}>
         <CategoryFilter
-          categories={CATEGORIES}
+          categories={categories}
           activeFilter={filter}
           onFilterChange={setFilter}
         />
         <FlashcardGrid
           cards={filteredCards}
           onEdit={openEditModal}
-          onDiscard={deleteCard}
+          onDelete={openConfirm}
         />
       </main>
 
@@ -53,9 +63,16 @@ function App() {
         <CardModal
           mode={modalState.mode}
           card={modalState.card}
-          categories={CATEGORIES}
+          categories={categories}
           onSubmit={handleModalSubmit}
           onClose={closeModal}
+        />
+      )}
+
+      {confirmState.open && (
+        <ConfirmDialog
+          onConfirm={() => deleteCard(confirmState.cardId)}
+          onCancel={closeConfirm}
         />
       )}
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import styles from './Flashcard.module.css';
 
 const CARD_COLORS = [
@@ -12,17 +12,12 @@ const CARD_COLORS = [
   '#f5a623', // amber
 ];
 
-function Flashcard({ card, colorIndex = 0, onEdit, onDiscard }) {
+function Flashcard({ card, colorIndex = 0, onEdit, onDelete }) {
   const [flipped, setFlipped] = useState(false);
-  const [disappearing, setDisappearing] = useState(false);
-  const timerRef = useRef(null);
 
   const handleClick = (e) => {
     if (e.target.closest('button')) return;
-    if (flipped || disappearing) return;
-
-    setFlipped(true);
-    timerRef.current = setTimeout(() => setDisappearing(true), 1500);
+    setFlipped((prev) => !prev);
   };
 
   const handleKeyDown = (e) => {
@@ -32,21 +27,13 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDiscard }) {
     }
   };
 
-  const handleAnimationEnd = () => {
-    if (disappearing) {
-      clearTimeout(timerRef.current);
-      onDiscard(card.id);
-    }
-  };
-
   const cardColor = CARD_COLORS[colorIndex % CARD_COLORS.length];
 
   return (
     <div
-      className={`${styles.wrapper} ${disappearing ? styles.disappearing : ''}`}
+      className={styles.wrapper}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      onAnimationEnd={handleAnimationEnd}
       role="button"
       tabIndex={0}
       aria-label={`Flashcard: ${card.question}. Press Enter or Space to flip.`}
@@ -73,7 +60,22 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDiscard }) {
         <div className={styles.back} style={{ background: cardColor }}>
           <p className={styles.answerLabel}>Answer</p>
           <p className={styles.answer}>{card.answer}</p>
-          <p className={styles.dismissHint}>Disappearing shortly…</p>
+          <div className={styles.backActions}>
+            <button
+              className={styles.flipBackBtn}
+              onClick={(e) => { e.stopPropagation(); setFlipped(false); }}
+              aria-label="Flip card back to question"
+            >
+              ↩ Flip Back
+            </button>
+            <button
+              className={styles.deleteBtn}
+              onClick={(e) => { e.stopPropagation(); onDelete(card.id); }}
+              aria-label="Delete card"
+            >
+              🗑 Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>

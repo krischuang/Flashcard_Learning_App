@@ -14,7 +14,7 @@ function CardModal({ mode, card, categories, onSubmit, onClose }) {
     if (!modal) return;
 
     // Focus first interactive element
-    const firstFocusable = modal.querySelector('textarea, select, button');
+    const firstFocusable = modal.querySelector('textarea, input, button');
     firstFocusable?.focus();
 
     const handleKeyDown = (e) => {
@@ -24,7 +24,7 @@ function CardModal({ mode, card, categories, onSubmit, onClose }) {
       }
       if (e.key === 'Tab') {
         const focusables = modal.querySelectorAll(
-          'textarea, select, button:not([disabled])',
+          'textarea, input, button:not([disabled])',
         );
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
@@ -50,6 +50,7 @@ function CardModal({ mode, card, categories, onSubmit, onClose }) {
     const errs = {};
     if (!question.trim()) errs.question = 'Question is required.';
     if (!answer.trim()) errs.answer = 'Answer is required.';
+    if (!category.trim()) errs.category = 'Category is required.';
     return errs;
   };
 
@@ -131,17 +132,28 @@ function CardModal({ mode, card, categories, onSubmit, onClose }) {
           {/* Category */}
           <div className={styles.field}>
             <label htmlFor="modal-category">Category</label>
-            <select
+            <input
               id="modal-category"
+              type="text"
+              list="category-suggestions"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setErrors((prev) => ({ ...prev, category: '' }));
+              }}
+              placeholder="e.g. Science, History, or your own…"
+              className={errors.category ? styles.inputError : ''}
+            />
+            <datalist id="category-suggestions">
               {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
+                <option key={c} value={c} />
               ))}
-            </select>
+            </datalist>
+            {errors.category && (
+              <span className={styles.errorMsg} role="alert">
+                {errors.category}
+              </span>
+            )}
           </div>
 
           {/* Actions */}

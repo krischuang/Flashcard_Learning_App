@@ -33,9 +33,9 @@ Memorising new material is hard without a structured system. Traditional static 
 - **Create flashcards** — add a question, answer, and category via a modal form with client-side validation
 - **Read and browse flashcards** — all cards are fetched from the database on load and displayed in a responsive grid
 - **Update flashcards** — edit any card's question, answer, or category inline through the same modal
-- **Delete flashcards** — remove cards permanently with a confirmation step
-- **Category filtering** — filter the card grid by General Knowledge, Science, or Math with one click
-- **3D flip animation** — click any card to flip it and reveal the answer with a CSS 3D transform
+- **Delete flashcards** — flip a card to reveal the answer, then press Delete; a confirmation dialog prevents accidental deletion
+- **Dynamic category filtering** — filter pills are generated from the actual categories present in the database; new categories appear automatically as cards are created
+- **3D flip animation** — click any card to flip it and reveal the answer with a CSS 3D transform; click again or press "Flip Back" to return to the question
 - **Colour-coded cards** — each card slot is assigned one of 8 rotating accent colours for quick visual distinction
 - **Featured first card** — the first card in the grid is displayed larger as a visual anchor
 - **Toast notifications** — non-blocking success and error messages after every create, update, or delete action

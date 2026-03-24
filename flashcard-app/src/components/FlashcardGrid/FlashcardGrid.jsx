@@ -1,7 +1,7 @@
 import Flashcard from '../Flashcard/Flashcard';
 import styles from './FlashcardGrid.module.css';
 
-function FlashcardGrid({ cards, onEdit, onDiscard }) {
+function FlashcardGrid({ cards, onEdit, onDelete }) {
   if (cards.length === 0) {
     return (
       <div className={styles.empty} role="status">
@@ -21,7 +21,7 @@ function FlashcardGrid({ cards, onEdit, onDiscard }) {
           card={card}
           colorIndex={index}
           onEdit={onEdit}
-          onDiscard={onDiscard}
+          onDelete={onDelete}
         />
       ))}
     </div>
