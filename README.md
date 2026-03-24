@@ -68,7 +68,8 @@ Internet_Prgoramming/
 │       │   ├── Flashcard/          # Individual card with flip animation
 │       │   ├── FlashcardGrid/      # Responsive grid layout for all cards
 │       │   ├── CardModal/          # Create / edit modal form
-│       │   └── ConfirmDialog/      # Delete confirmation dialog
+│       │   ├── ConfirmDialog/      # Delete confirmation dialog
+│       │   └── ErrorBoundary/      # Catches unhandled React errors; shows fallback UI
 │       ├── hooks/
 │       │   └── useFlashcards.js    # All state and API side-effects in one hook
 │       ├── services/
@@ -78,7 +79,8 @@ Internet_Prgoramming/
 │
 └── flashcard_backend/              # Python FastAPI backend
     ├── requirements.txt
-    ├── .env                        # Database connection string (not committed in production)
+    ├── .env                        # Database connection string — excluded from git via .gitignore
+    ├── .env.example                # Template showing required environment variables
     ├── alembic.ini                 # Alembic migration config
     ├── alembic/versions/           # Database migration scripts
     ├── seed.py                     # Script to populate the database with sample cards
@@ -106,7 +108,7 @@ Connecting a React frontend to a remote MySQL database via a FastAPI backend req
 ```bash
 cd flashcard_backend
 pip install -r requirements.txt
-# create a .env file with: DATABASE_URL=mysql+pymysql://<user>:<pass>@<host>:<port>/<db>
+cp .env.example .env        # then fill in your database credentials
 alembic upgrade head        # run migrations
 python seed.py              # optional: load sample data
 uvicorn app.main:app --reload

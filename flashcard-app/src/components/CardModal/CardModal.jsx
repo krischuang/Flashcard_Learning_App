@@ -22,6 +22,8 @@ function CardModal({ mode, card, categories, onSubmit, onClose }) {
         onClose();
         return;
       }
+      // Focus trap: keep Tab cycling within the modal so keyboard users
+      // cannot accidentally navigate behind the backdrop
       if (e.key === 'Tab') {
         const focusables = modal.querySelectorAll(
           'textarea, input, button:not([disabled])',
@@ -29,11 +31,13 @@ function CardModal({ mode, card, categories, onSubmit, onClose }) {
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         if (e.shiftKey) {
+          // Shift+Tab on the first element wraps to the last
           if (document.activeElement === first) {
             e.preventDefault();
             last.focus();
           }
         } else {
+          // Tab on the last element wraps to the first
           if (document.activeElement === last) {
             e.preventDefault();
             first.focus();

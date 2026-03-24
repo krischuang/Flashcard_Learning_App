@@ -27,6 +27,7 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDelete }) {
     }
   };
 
+  // Cycle through the palette so consecutive cards always differ in colour
   const cardColor = CARD_COLORS[colorIndex % CARD_COLORS.length];
 
   return (
