@@ -1,0 +1,45 @@
+version: "3.9"
+
+# ── Flashcard App — Local Development Stack ──────────────────────────────────
+# Starts a MySQL 8.0 database pre-loaded with schema and seed data.
+#
+# Quick start:
+#   docker-compose up -d
+#   (database is ready on localhost:3306 — see flashcard_backend/.env.local)
+#
+# Stop and remove containers (data is preserved in the named volume):
+#   docker-compose down
+#
+# Wipe all data and start fresh:
+#   docker-compose down -v
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: flashcard_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: flashcard_db
+      MYSQL_USER: flashcard_user
+      MYSQL_PASSWORD: flashcard_pass
+    ports:
+      # Expose MySQL on localhost so the FastAPI backend (running on the host)
+      # can connect to it at DB_HOST=localhost, DB_PORT=3306
+      - "3306:3306"
+    volumes:
+      # Named volume for persistent data storage across container restarts
+      - flashcard_mysql_data:/var/lib/mysql
+      # Init scripts — MySQL runs these in alphabetical order on first start.
+      # schema.sql creates the table; seed.sql populates sample cards.
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/seed.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "flashcard_user", "-pflashcard_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  flashcard_mysql_data:
