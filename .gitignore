@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+
+# Frontend
+flashcard-app/.env
+flashcard-app/.env.local
+flashcard-app/dist/
+flashcard-app/node_modules/
+
+# Backend
+flashcard_backend/.env
+flashcard_backend/venv/
+flashcard_backend/__pycache__/
+flashcard_backend/**/__pycache__/
+flashcard_backend/**/*.pyc

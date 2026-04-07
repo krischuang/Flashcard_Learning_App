@@ -53,6 +53,7 @@ Memorising new material is hard without a structured system. Traditional static 
 Internet_Prgoramming/
 │
 ├── README.md
+├── .gitignore
 ├── docker-compose.yml              # Starts a local MySQL 8.0 container
 │
 ├── database/                       # Plain-SQL setup files
@@ -80,8 +81,7 @@ Internet_Prgoramming/
 │       │   └── useFlashcards.js
 │       ├── services/
 │       │   └── api.js
-│       └── utils/
-│           └── constants.js
+│       └── utils/                  # (empty — reserved for future helpers)
 │
 └── flashcard_backend/              # Python FastAPI backend
     ├── requirements.txt
