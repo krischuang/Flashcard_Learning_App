@@ -1,8 +1,12 @@
-# FlashCard Learning App
+# Flashcard Learning App
+
+A full-stack web application for creating, organising, and reviewing digital flashcards using active-recall techniques. Built with React (frontend) and FastAPI + MySQL (backend).
+
+---
 
 ## Problem Statement
 
-Memorising new material is hard without a structured system. Traditional static notes are passive — they don't challenge you to recall information. This app solves that by providing a digital flashcard platform where users can create, organise, review, and manage their own study cards. Each card hides the answer until the user actively chooses to reveal it, reinforcing active recall. Cards are grouped by category so users can focus their study sessions on a specific subject area.
+Memorising new material is hard without a structured system. Traditional static notes are passive — they do not challenge you to recall information. This app solves that by providing a digital flashcard platform where users can create, organise, review, and manage their own study cards. Each card hides the answer until the user actively chooses to reveal it, reinforcing active recall. When a card is flipped, a 10-second countdown begins — the card is automatically deleted when the timer expires. Cards are grouped by category so users can focus their study sessions on a specific subject area.
 
 ---
 
@@ -20,10 +24,10 @@ Memorising new material is hard without a structured system. Traditional static 
 | ASGI server | Uvicorn |
 | ORM | SQLAlchemy 2.0 |
 | Database migrations | Alembic |
-| Database | MySQL (remote, hosted on AWS EC2) |
+| Database | MySQL 8.0 (local Docker container) |
 | Data validation | Pydantic v2 |
 | Environment config | `python-dotenv` |
-| Deployment | Not deployed (runs locally: frontend on port 5173, backend on port 8000) |
+| Local DB container | Docker / docker-compose |
 
 ---
 
@@ -33,16 +37,17 @@ Memorising new material is hard without a structured system. Traditional static 
 - **Create flashcards** — add a question, answer, and category via a modal form with client-side validation
 - **Read and browse flashcards** — all cards are fetched from the database on load and displayed in a responsive grid
 - **Update flashcards** — edit any card's question, answer, or category inline through the same modal
-- **Delete flashcards** — flip a card to reveal the answer, then press Delete; a confirmation dialog prevents accidental deletion
+- **Auto-delete countdown** — flip a card to reveal the answer; a 10-second countdown starts automatically and deletes the card when it reaches zero. Tap the card again to cancel the countdown and flip back
+- **Delete from collection** — open the edit modal on any card to permanently remove it from the deck
 - **Dynamic category filtering** — filter pills are generated from the actual categories present in the database; new categories appear automatically as cards are created
-- **3D flip animation** — click any card to flip it and reveal the answer with a CSS 3D transform; click again or press "Flip Back" to return to the question
+- **3D flip animation** — click any card to flip it and reveal the answer with a CSS 3D transform
 - **Colour-coded cards** — each card slot is assigned one of 8 rotating accent colours for quick visual distinction
 - **Featured first card** — the first card in the grid is displayed larger as a visual anchor
 - **Toast notifications** — non-blocking success and error messages after every create, update, or delete action
 - **Keyboard accessibility** — all interactive elements support keyboard navigation; modals trap focus and close on Escape
 - **ARIA semantics** — dialogs use `role="dialog"` / `role="alertdialog"`, buttons have `aria-label` attributes
 - **Responsive layout** — four-column grid on desktop, three on tablet, two on mobile
-- **Seed data** — 20 pre-written flashcards across three categories for immediate demonstration
+- **Seed data** — 20 pre-written flashcards across three categories (Python, Web, Databases) for immediate demonstration
 
 ---
 
@@ -52,69 +57,117 @@ Memorising new material is hard without a structured system. Traditional static 
 Internet_Prgoramming/
 │
 ├── README.md
+├── docker-compose.yml              # Starts a local MySQL 8.0 container
+│
+├── database/                       # Plain-SQL setup files
+│   ├── schema.sql                  # Creates the flashcards table
+│   └── seed.sql                    # Inserts 20 sample flashcards
 │
 ├── flashcard-app/                  # React frontend
-│   ├── index.html                  # Single HTML entry point
-│   ├── vite.config.js              # Vite + React plugin config
+│   ├── index.html
+│   ├── vite.config.js
 │   ├── package.json
 │   └── src/
-│       ├── main.jsx                # React DOM entry point
-│       ├── App.jsx                 # Root component; composes all views
+│       ├── main.jsx
+│       ├── App.jsx
+│       ├── index.css
 │       ├── App.module.css
-│       ├── index.css               # Global reset and font setup
-│       ├── components/             # One folder per UI component
-│       │   ├── Header/             # App title, card count badge, New Card button
-│       │   ├── CategoryFilter/     # Pill buttons for filtering by category
-│       │   ├── Flashcard/          # Individual card with flip animation
-│       │   ├── FlashcardGrid/      # Responsive grid layout for all cards
-│       │   ├── CardModal/          # Create / edit modal form
-│       │   ├── ConfirmDialog/      # Delete confirmation dialog
-│       │   └── ErrorBoundary/      # Catches unhandled React errors; shows fallback UI
+│       ├── components/
+│       │   ├── Header/
+│       │   ├── CategoryFilter/
+│       │   ├── Flashcard/          # Card with flip + 10-second auto-delete countdown
+│       │   ├── FlashcardGrid/
+│       │   ├── CardModal/
+│       │   ├── ConfirmDialog/
+│       │   └── ErrorBoundary/
 │       ├── hooks/
-│       │   └── useFlashcards.js    # All state and API side-effects in one hook
+│       │   └── useFlashcards.js
 │       ├── services/
-│       │   └── api.js              # Thin wrapper around fetch for all API calls
+│       │   └── api.js
 │       └── utils/
-│           └── constants.js        # Shared constants (category list)
+│           └── constants.js
 │
 └── flashcard_backend/              # Python FastAPI backend
     ├── requirements.txt
-    ├── .env                        # Database connection string — excluded from git via .gitignore
-    ├── .env.example                # Template showing required environment variables
-    ├── alembic.ini                 # Alembic migration config
-    ├── alembic/versions/           # Database migration scripts
-    ├── seed.py                     # Script to populate the database with sample cards
+    ├── .env                        # Active config — copy from .env.local to create
+    ├── .env.example                # Template showing all required variables
+    ├── .env.local                  # Ready-to-use config for the local Docker MySQL
+    ├── alembic.ini
+    ├── alembic/
+    │   └── versions/               # Database migration scripts
     └── app/
-        ├── main.py                 # FastAPI app instantiation and CORS config
-        ├── database.py             # SQLAlchemy engine and session setup
-        ├── models.py               # Flashcard ORM model (id, question, answer, category, created_at)
-        ├── schemas.py              # Pydantic schemas for request/response validation
+        ├── main.py                 # FastAPI app + CORS config
+        ├── database.py             # SQLAlchemy engine (reads DB_* env vars)
+        ├── models.py               # Flashcard ORM model
+        ├── schemas.py              # Pydantic request/response schemas
         └── routers/
-            └── flashcards.py       # CRUD route handlers: GET, POST, PUT, DELETE /cards/
+            └── flashcards.py       # CRUD endpoints: GET POST PUT DELETE /cards/
 ```
 
 ---
 
-## Challenges Overcome
+## Running Locally
 
-Connecting a React frontend to a remote MySQL database via a FastAPI backend required careful configuration of CORS headers — early development was blocked by browser preflight rejections until allowed origins and headers were explicitly set in `main.py`. Implementing the 3D card flip purely in CSS required understanding `transform-style: preserve-3d` and `backface-visibility: hidden`, and getting both the front and back faces to sit exactly on top of each other without layout shifts took significant trial and error. Designing a single `CardModal` component that handles both create and edit modes (with pre-filled fields and different submit labels) without duplicating code required a clean props-driven approach using a `mode` flag and conditional logic inside the hook. Keeping state consistent between the backend and the frontend — especially after update and delete operations — meant the `useFlashcards` hook had to perform local state mutations rather than re-fetching the full list after every operation, which reduced unnecessary network round-trips and kept the UI feeling instant.
+### Prerequisites
+
+| Tool | Version | Install |
+|------|---------|---------|
+| Python | 3.10+ | python.org |
+| Node.js | 18+ | nodejs.org |
+| Docker Desktop | any recent | docker.com/products/docker-desktop |
 
 ---
 
-## Getting Started
+### Step 1 — Start the local MySQL database
 
-### Backend
+```bash
+# From the project root (Internet_Prgoramming/)
+docker-compose up -d
+```
+
+Docker will:
+1. Pull the `mysql:8.0` image (first run only)
+2. Create the `flashcard_db` database
+3. Run `database/schema.sql` to create the `flashcards` table
+4. Run `database/seed.sql` to insert 20 sample cards
+
+Wait about 10–15 seconds for MySQL to be ready. You can check with:
+
+```bash
+docker-compose ps        # should show "healthy"
+docker-compose logs db   # inspect startup output
+```
+
+---
+
+### Step 2 — Configure and start the backend
 
 ```bash
 cd flashcard_backend
+
+# Create a Python virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
-cp .env.example .env        # then fill in your database credentials
-alembic upgrade head        # run migrations
-python seed.py              # optional: load sample data
+
+# Copy the local config
+cp .env.local .env
+
+# Start the API server
 uvicorn app.main:app --reload
 ```
 
-### Frontend
+The backend will be available at `http://localhost:8000`.
+
+> **Note:** Alembic migrations are **not required** — `schema.sql` already creates the table via Docker. If you prefer Alembic: `alembic upgrade head`.
+
+---
+
+### Step 3 — Start the frontend
+
+Open a new terminal:
 
 ```bash
 cd flashcard-app
@@ -122,4 +175,71 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open `http://localhost:5173` in your browser. The app will load with the 20 seed cards.
+
+---
+
+### Stopping the local environment
+
+```bash
+# Stop the MySQL container (data is preserved)
+docker-compose down
+
+# Wipe all data and start completely fresh next time
+docker-compose down -v
+```
+
+---
+
+## Database Initialisation Reference
+
+### Option A — Docker (recommended, automatic)
+
+```bash
+docker-compose up -d
+# Schema and seed data are loaded automatically on first start.
+```
+
+### Option B — Manual SQL
+
+```bash
+mysql -h localhost -u flashcard_user -p < database/schema.sql
+mysql -h localhost -u flashcard_user -p flashcard_db < database/seed.sql
+```
+
+### Option C — Alembic migrations
+
+```bash
+cd flashcard_backend
+alembic upgrade head
+```
+
+---
+
+## Environment Variables Reference
+
+All backend configuration is read from `flashcard_backend/.env`.
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DB_HOST` | MySQL host | `localhost` |
+| `DB_PORT` | MySQL port | `3306` |
+| `DB_NAME` | Database name | `flashcard_db` |
+| `DB_USER` | Database user | `flashcard_user` |
+| `DB_PASSWORD` | Database password | `flashcard_pass` |
+
+---
+
+## Challenges Overcome
+
+**CORS configuration** — Connecting a React frontend to a FastAPI backend required careful setup of CORS headers. Early development was blocked by browser preflight rejections until allowed origins were explicitly set in `main.py`.
+
+**3D card flip in pure CSS** — Implementing the flip animation required understanding `transform-style: preserve-3d` and `backface-visibility: hidden`. Getting both faces to sit exactly on top of each other without layout shifts took significant trial and error.
+
+**Auto-delete countdown** — Adding a 10-second countdown that starts on flip, cancels when flipped back, and triggers a fade-out animation required careful use of `useEffect` and `useRef` to avoid stale closure bugs and timer leaks.
+
+**Long content layout** — Cards have a fixed height set by the CSS grid. Long questions or answers previously overflowed silently. This was fixed by introducing a scrollable inner region (`min-height: 0` on flex children + `overflow-y: auto`) so text scrolls within the card without breaking the layout.
+
+**Single modal for create and edit** — Designing one `CardModal` component that handles both modes (with pre-filled fields and different submit labels) without code duplication required a clean `mode` flag and conditional logic inside the hook.
+
+**Consistent frontend state** — After update and delete operations, performing local state mutations in `useFlashcards` (rather than re-fetching the full list) avoids unnecessary network round-trips and keeps the UI feeling instant.

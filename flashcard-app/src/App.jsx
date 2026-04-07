@@ -45,6 +45,22 @@ function App() {
 
   return (
     <div className={styles.app}>
+
+      {/* ── Decorative background scribbles ─────────────────────── */}
+      {/* Top-right: overlapping oval loops */}
+      <svg className={styles.scribbleTopRight} viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="90"  cy="130" rx="82" ry="56" fill="none" stroke="#dba8d8" strokeWidth="11" strokeLinecap="round" transform="rotate(-22 90 130)"/>
+        <ellipse cx="190" cy="100" rx="78" ry="54" fill="none" stroke="#dba8d8" strokeWidth="11" strokeLinecap="round" transform="rotate(-16 190 100)"/>
+        <ellipse cx="285" cy="75"  rx="75" ry="52" fill="none" stroke="#dba8d8" strokeWidth="11" strokeLinecap="round" transform="rotate(-10 285 75)"/>
+      </svg>
+
+      {/* Bottom-center: stacked arch curves */}
+      <svg className={styles.scribbleBottomCenter} viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M 10 190 Q 90 10 185 190"  fill="none" stroke="#dba8d8" strokeWidth="11" strokeLinecap="round"/>
+        <path d="M 55 195 Q 140 5  240 195" fill="none" stroke="#dba8d8" strokeWidth="11" strokeLinecap="round"/>
+        <path d="M 100 198 Q 188 2 290 198" fill="none" stroke="#dba8d8" strokeWidth="11" strokeLinecap="round"/>
+      </svg>
+
       <Header cardCount={cards.length} onNewCard={openCreateModal} />
 
       <main className={styles.main}>
@@ -57,7 +73,7 @@ function App() {
           cards={filteredCards}
           loading={loading}
           onEdit={openEditModal}
-          onDelete={openConfirm}
+          onDelete={deleteCard}
         />
       </main>
 
@@ -68,15 +84,8 @@ function App() {
           categories={categories}
           loading={loading}
           onSubmit={handleModalSubmit}
+          onDelete={deleteCard}
           onClose={closeModal}
-        />
-      )}
-
-      {confirmState.open && (
-        <ConfirmDialog
-          loading={loading}
-          onConfirm={() => deleteCard(confirmState.cardId)}
-          onCancel={closeConfirm}
         />
       )}
 

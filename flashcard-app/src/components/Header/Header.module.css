@@ -1,5 +1,5 @@
 .header {
-  background: #fffefe;
+  background: transparent;
   padding: 28px 32px 20px;
   display: flex;
   align-items: center;
@@ -7,6 +7,8 @@
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .brand {
@@ -15,22 +17,18 @@
   gap: 12px;
 }
 
-.logo {
-  font-size: 30px;
-  line-height: 1;
-}
-
 .title {
   font-size: 26px;
   font-weight: 800;
-  color: #304254;
+  color: #1a5c6b;
   margin: 0;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
 
+/* Burgundy accent on the second word */
 .titleAccent {
-  color: #fa0644;
+  color: #8b1a4a;
 }
 
 .actions {
@@ -40,7 +38,7 @@
 }
 
 .badge {
-  background: #aa02ff;
+  background: #7a5fa8;
   color: white;
   padding: 8px 16px;
   border-radius: 50px;
@@ -51,7 +49,7 @@
 }
 
 .newBtn {
-  background: #fa0644;
+  background: #8b1a4a;
   color: white;
   border: none;
   padding: 12px 28px;
@@ -65,7 +63,7 @@
 }
 
 .newBtn:hover {
-  background: #d4003a;
+  background: #6e1238;
   transform: translateY(-2px);
 }
 

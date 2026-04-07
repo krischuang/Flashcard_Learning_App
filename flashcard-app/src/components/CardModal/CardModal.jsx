@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './CardModal.module.css';
 
-function CardModal({ mode, card, categories, loading, onSubmit, onClose }) {
+function CardModal({ mode, card, categories, loading, onSubmit, onDelete, onClose }) {
   const [question, setQuestion] = useState(card?.question ?? '');
   const [answer, setAnswer] = useState(card?.answer ?? '');
   const [category, setCategory] = useState(card?.category ?? categories[0]);
@@ -162,6 +162,17 @@ function CardModal({ mode, card, categories, loading, onSubmit, onClose }) {
 
           {/* Actions */}
           <div className={styles.actions}>
+            {/* Show delete button only in edit mode */}
+            {mode === 'edit' && (
+              <button
+                type="button"
+                className={styles.deleteBtn}
+                onClick={() => { onDelete(card.id); onClose(); }}
+                disabled={loading}
+              >
+                Delete
+              </button>
+            )}
             <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={loading}>
               Cancel
             </button>
