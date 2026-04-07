@@ -24,11 +24,11 @@ function FlashcardGrid({ cards, loading, onEdit, onDelete, onDeleteRequest }) {
 
   return (
     <div className={styles.grid}>
-      {cards.map((card, index) => (
+      {cards.map((card) => (
         <Flashcard
           key={card.id}
           card={card}
-          colorIndex={index}
+          colorIndex={card.id}
           onEdit={onEdit}
           onDelete={onDelete}
           onDeleteRequest={onDeleteRequest}
