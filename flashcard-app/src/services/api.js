@@ -1,5 +1,6 @@
-// Real API service — calls the FastAPI backend at localhost:8000
-const BASE_URL = 'http://localhost:8000';
+// Base URL is read from the Vite environment variable VITE_API_URL.
+// Default falls back to localhost:8000 for local development.
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {

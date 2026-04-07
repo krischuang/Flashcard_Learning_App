@@ -2,13 +2,9 @@
 
 A full-stack web application for creating, organising, and reviewing digital flashcards using active-recall techniques. Built with React (frontend) and FastAPI + MySQL (backend).
 
----
-
 ## Problem Statement
 
 Memorising new material is hard without a structured system. Traditional static notes are passive — they do not challenge you to recall information. This app solves that by providing a digital flashcard platform where users can create, organise, review, and manage their own study cards. Each card hides the answer until the user actively chooses to reveal it, reinforcing active recall. When a card is flipped, a 10-second countdown begins — the card is automatically deleted when the timer expires. Cards are grouped by category so users can focus their study sessions on a specific subject area.
-
----
 
 ## Technical Stack
 
@@ -28,8 +24,8 @@ Memorising new material is hard without a structured system. Traditional static 
 | Data validation | Pydantic v2 |
 | Environment config | `python-dotenv` |
 | Local DB container | Docker / docker-compose |
-
----
+| Routing | None (single-page, state-driven — no client-side router needed) |
+| Deployment | Not deployed — runs locally (frontend port 5173, backend port 8000) |
 
 ## Features
 
@@ -48,8 +44,6 @@ Memorising new material is hard without a structured system. Traditional static 
 - **ARIA semantics** — dialogs use `role="dialog"` / `role="alertdialog"`, buttons have `aria-label` attributes
 - **Responsive layout** — four-column grid on desktop, three on tablet, two on mobile
 - **Seed data** — 20 pre-written flashcards across three categories (Python, Web, Databases) for immediate demonstration
-
----
 
 ## Folder Structure
 
@@ -104,8 +98,6 @@ Internet_Prgoramming/
             └── flashcards.py       # CRUD endpoints: GET POST PUT DELETE /cards/
 ```
 
----
-
 ## Running Locally
 
 ### Prerequisites
@@ -138,8 +130,6 @@ docker-compose ps        # should show "healthy"
 docker-compose logs db   # inspect startup output
 ```
 
----
-
 ### Step 2 — Configure and start the backend
 
 ```bash
@@ -163,8 +153,6 @@ The backend will be available at `http://localhost:8000`.
 
 > **Note:** Alembic migrations are **not required** — `schema.sql` already creates the table via Docker. If you prefer Alembic: `alembic upgrade head`.
 
----
-
 ### Step 3 — Start the frontend
 
 Open a new terminal:
@@ -177,8 +165,6 @@ npm run dev
 
 Open `http://localhost:5173` in your browser. The app will load with the 20 seed cards.
 
----
-
 ### Stopping the local environment
 
 ```bash
@@ -188,8 +174,6 @@ docker-compose down
 # Wipe all data and start completely fresh next time
 docker-compose down -v
 ```
-
----
 
 ## Database Initialisation Reference
 
@@ -214,8 +198,6 @@ cd flashcard_backend
 alembic upgrade head
 ```
 
----
-
 ## Environment Variables Reference
 
 All backend configuration is read from `flashcard_backend/.env`.
@@ -227,8 +209,6 @@ All backend configuration is read from `flashcard_backend/.env`.
 | `DB_NAME` | Database name | `flashcard_db` |
 | `DB_USER` | Database user | `flashcard_user` |
 | `DB_PASSWORD` | Database password | `flashcard_pass` |
-
----
 
 ## Challenges Overcome
 
