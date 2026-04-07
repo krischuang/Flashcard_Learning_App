@@ -4,13 +4,21 @@ from alembic import context
 from dotenv import load_dotenv
 import os
 
-# Load .env so DATABASE_URL is available
+# Load .env (or whichever file is active) so DB vars are available
 load_dotenv()
 
 config = context.config
 
-# Override sqlalchemy.url with the value from .env
-config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
+_host     = os.getenv("DB_HOST", "localhost")
+_port     = os.getenv("DB_PORT", "3306")
+_name     = os.getenv("DB_NAME", "flashcard_db")
+_user     = os.getenv("DB_USER", "")
+_password = os.getenv("DB_PASSWORD", "")
+
+config.set_main_option(
+    "sqlalchemy.url",
+    f"mysql+pymysql://{_user}:{_password}@{_host}:{_port}/{_name}",
+)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
