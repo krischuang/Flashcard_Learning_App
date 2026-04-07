@@ -21,13 +21,10 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDelete, onDeleteRequest }) 
   const [countdown, setCountdown] = useState(null);
   const timerRef = useRef(null);
 
-  // Start countdown when flipped, clear it when flipped back
+  // Start countdown when flipped; card cannot be flipped back
   useEffect(() => {
     if (flipped) {
       setCountdown(COUNTDOWN_SECONDS);
-    } else {
-      clearTimeout(timerRef.current);
-      setCountdown(null);
     }
     return () => clearTimeout(timerRef.current);
   }, [flipped]);
@@ -46,12 +43,8 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDelete, onDeleteRequest }) 
 
   const handleClick = (e) => {
     if (e.target.closest('button')) return;
-    // Clicking the back face flips back and cancels the countdown
-    if (flipped) {
-      clearTimeout(timerRef.current);
-      setCountdown(null);
-    }
-    setFlipped((prev) => !prev);
+    // Once flipped, the card cannot be flipped back — it will auto-delete
+    if (!flipped) setFlipped(true);
   };
 
   const handleKeyDown = (e) => {
@@ -127,7 +120,6 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDelete, onDeleteRequest }) 
             <div className={styles.textScroll}>
               <p className={styles.answer}>{card.answer}</p>
             </div>
-            <span className={styles.hint}>Tap to flip back →</span>
           </div>
         </div>
       </div>
