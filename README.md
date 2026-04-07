@@ -33,7 +33,7 @@ Memorising new material is hard without a structured system. Traditional static 
 - **Create flashcards** — add a question, answer, and category via a modal form with client-side validation
 - **Read and browse flashcards** — all cards are fetched from the database on load and displayed in a responsive grid
 - **Update flashcards** — edit any card's question, answer, or category inline through the same modal
-- **Auto-delete countdown** — flip a card to reveal the answer; a 10-second countdown starts automatically and deletes the card when it reaches zero. Tap the card again to cancel the countdown and flip back
+- **Auto-delete countdown** — flip a card to reveal the answer; a 10-second countdown starts automatically and deletes the card when it reaches zero. Once flipped, the card cannot be flipped back
 - **Delete from collection** — open the edit modal on any card to permanently remove it from the deck
 - **Dynamic category filtering** — filter pills are generated from the actual categories present in the database; new categories appear automatically as cards are created
 - **3D flip animation** — click any card to flip it and reveal the answer with a CSS 3D transform
