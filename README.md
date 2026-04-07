@@ -38,7 +38,9 @@ Memorising new material is hard without a structured system. Traditional static 
 - **Dynamic category filtering** — filter pills are generated from the actual categories present in the database; new categories appear automatically as cards are created
 - **3D flip animation** — click any card to flip it and reveal the answer with a CSS 3D transform
 - **Colour-coded cards** — each card slot is assigned one of 8 rotating accent colours for quick visual distinction
-- **Featured first card** — the first card in the grid is displayed larger as a visual anchor
+- **Category autocomplete** — typing a category in the create/edit form suggests existing categories via a native `<datalist>`, so users stay consistent without being locked to a fixed list
+- **Confirm dialog before deletion** — a focused `alertdialog` with keyboard support (Escape to cancel) prevents accidental permanent deletes
+- **Error boundary** — a React class-based error boundary wraps the whole app; if a component crashes, users see a friendly message and a reload button instead of a blank screen
 - **Toast notifications** — non-blocking success and error messages after every create, update, or delete action
 - **Keyboard accessibility** — all interactive elements support keyboard navigation; modals trap focus and close on Escape
 - **ARIA semantics** — dialogs use `role="dialog"` / `role="alertdialog"`, buttons have `aria-label` attributes

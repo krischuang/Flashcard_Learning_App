@@ -14,7 +14,7 @@ const CARD_COLORS = [
 
 const COUNTDOWN_SECONDS = 10;
 
-function Flashcard({ card, colorIndex = 0, onEdit, onDelete }) {
+function Flashcard({ card, colorIndex = 0, onEdit, onDelete, onDeleteRequest }) {
   const [flipped, setFlipped] = useState(false);
   // "leaving" triggers the fade-out animation before the card is removed
   const [leaving, setLeaving] = useState(false);
@@ -42,7 +42,7 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDelete }) {
     }
     timerRef.current = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(timerRef.current);
-  }, [countdown]);
+  }, [countdown, onDelete, card.id]);
 
   const handleClick = (e) => {
     if (e.target.closest('button')) return;
@@ -78,14 +78,24 @@ function Flashcard({ card, colorIndex = 0, onEdit, onDelete }) {
         <div className={styles.front} style={{ background: cardColor, pointerEvents: flipped ? 'none' : 'auto' }}>
           <div className={styles.topRow}>
             <span className={styles.categoryTag}>{card.category}</span>
-            <button
-              className={styles.editBtn}
-              onClick={(e) => { e.stopPropagation(); onEdit(card); }}
-              aria-label="Edit card"
-              title="Edit"
-            >
-              ✎
-            </button>
+            <div className={styles.cardActions}>
+              <button
+                className={styles.editBtn}
+                onClick={(e) => { e.stopPropagation(); onEdit(card); }}
+                aria-label="Edit card"
+                title="Edit"
+              >
+                ✎
+              </button>
+              <button
+                className={styles.deleteBtn}
+                onClick={(e) => { e.stopPropagation(); onDeleteRequest(card.id); }}
+                aria-label="Delete card"
+                title="Delete"
+              >
+                🗑
+              </button>
+            </div>
           </div>
           <div className={styles.decorativeArea} />
           <div className={styles.cardFooter}>

@@ -1,0 +1,134 @@
+{
+  "database": "flashcard_db",
+  "table": "flashcards",
+  "exported_at": "2026-04-07",
+  "schema": {
+    "id": "INT AUTO_INCREMENT PRIMARY KEY",
+    "question": "TEXT NOT NULL",
+    "answer": "TEXT NOT NULL",
+    "category": "VARCHAR(100) NOT NULL DEFAULT 'General'",
+    "created_at": "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  },
+  "data": [
+    {
+      "id": 1,
+      "question": "What is a Python decorator?",
+      "answer": "A function that wraps another function to extend its behaviour without modifying it. Applied with the @syntax above a function definition.",
+      "category": "Python"
+    },
+    {
+      "id": 2,
+      "question": "What is the difference between a list and a tuple in Python?",
+      "answer": "Lists are mutable (can be changed after creation); tuples are immutable. Tuples are generally faster and used for fixed collections of items.",
+      "category": "Python"
+    },
+    {
+      "id": 3,
+      "question": "What does the `__init__` method do in a Python class?",
+      "answer": "It is the constructor — called automatically when a new instance is created. Used to initialise instance attributes.",
+      "category": "Python"
+    },
+    {
+      "id": 4,
+      "question": "What is a Python generator?",
+      "answer": "A function that uses `yield` to return values one at a time, lazily. It does not build the full list in memory, making it memory-efficient for large sequences.",
+      "category": "Python"
+    },
+    {
+      "id": 5,
+      "question": "What is the difference between `==` and `is` in Python?",
+      "answer": "`==` compares values (equality); `is` compares identity (same object in memory). Two equal objects can have different identities.",
+      "category": "Python"
+    },
+    {
+      "id": 6,
+      "question": "What is list comprehension in Python?",
+      "answer": "A concise syntax for creating lists: `[expr for item in iterable if condition]`. More readable and often faster than an equivalent for-loop.",
+      "category": "Python"
+    },
+    {
+      "id": 7,
+      "question": "What does `*args` and `**kwargs` mean in a function signature?",
+      "answer": "`*args` collects extra positional arguments as a tuple; `**kwargs` collects extra keyword arguments as a dictionary.",
+      "category": "Python"
+    },
+    {
+      "id": 8,
+      "question": "What is the difference between GET and POST HTTP methods?",
+      "answer": "GET retrieves data and is idempotent; parameters go in the URL. POST sends data in the request body, typically to create or submit something.",
+      "category": "Web"
+    },
+    {
+      "id": 9,
+      "question": "What is CORS and why is it needed?",
+      "answer": "Cross-Origin Resource Sharing — a browser security policy that blocks web pages from making requests to a different domain. Servers must explicitly allow origins via response headers.",
+      "category": "Web"
+    },
+    {
+      "id": 10,
+      "question": "What is REST?",
+      "answer": "Representational State Transfer — an architectural style for APIs using HTTP methods (GET, POST, PUT, DELETE) to operate on resources identified by URLs.",
+      "category": "Web"
+    },
+    {
+      "id": 11,
+      "question": "What is the purpose of the `Content-Type` header?",
+      "answer": "It tells the receiver the media type of the request or response body (e.g. `application/json`, `text/html`), so it knows how to parse the data.",
+      "category": "Web"
+    },
+    {
+      "id": 12,
+      "question": "What is the difference between 4xx and 5xx HTTP status codes?",
+      "answer": "4xx errors indicate a client mistake (e.g. 400 Bad Request, 404 Not Found, 401 Unauthorised). 5xx errors indicate a server-side failure (e.g. 500 Internal Server Error).",
+      "category": "Web"
+    },
+    {
+      "id": 13,
+      "question": "What is a JWT?",
+      "answer": "JSON Web Token — a compact, URL-safe token encoding a payload (usually user identity/claims) signed with a secret or private key. Used for stateless authentication.",
+      "category": "Web"
+    },
+    {
+      "id": 14,
+      "question": "What does \"stateless\" mean in the context of HTTP?",
+      "answer": "Each request is self-contained — the server does not retain any memory of previous requests from the same client. All required state must be sent with every request.",
+      "category": "Web"
+    },
+    {
+      "id": 15,
+      "question": "What is a primary key?",
+      "answer": "A column (or set of columns) that uniquely identifies each row in a table. Values must be unique and not NULL.",
+      "category": "Databases"
+    },
+    {
+      "id": 16,
+      "question": "What is the difference between INNER JOIN and LEFT JOIN?",
+      "answer": "INNER JOIN returns only rows with matching values in both tables. LEFT JOIN returns all rows from the left table plus matching rows from the right (NULLs where no match).",
+      "category": "Databases"
+    },
+    {
+      "id": 17,
+      "question": "What is database normalisation?",
+      "answer": "The process of organising a database to reduce redundancy and improve data integrity. Normal forms (1NF, 2NF, 3NF) define progressively stricter rules.",
+      "category": "Databases"
+    },
+    {
+      "id": 18,
+      "question": "What is an index in a database?",
+      "answer": "A data structure (usually a B-tree) that speeds up lookups on a column by avoiding full table scans. Speeds up reads but slightly slows writes.",
+      "category": "Databases"
+    },
+    {
+      "id": 19,
+      "question": "What is the difference between SQL and NoSQL databases?",
+      "answer": "SQL databases store structured data in tables with a fixed schema and use relational joins. NoSQL databases (document, key-value, graph) are schema-flexible and optimised for specific access patterns.",
+      "category": "Databases"
+    },
+    {
+      "id": 20,
+      "question": "What is ACID in database transactions?",
+      "answer": "Atomicity (all-or-nothing), Consistency (valid state before and after), Isolation (concurrent transactions do not interfere), Durability (committed data persists). These properties guarantee reliable transactions.",
+      "category": "Databases"
+    }
+  ]
+}

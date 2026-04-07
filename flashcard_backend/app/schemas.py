@@ -11,7 +11,7 @@ class FlashcardCreate(BaseModel):
 class FlashcardUpdate(BaseModel):
     question: str | None = Field(default=None, min_length=1)
     answer: str | None = Field(default=None, min_length=1)
-    category: str | None = None
+    category: str | None = Field(default=None, min_length=1)
 
 
 class FlashcardOut(BaseModel):

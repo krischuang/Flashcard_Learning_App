@@ -74,6 +74,7 @@ function App() {
           loading={loading}
           onEdit={openEditModal}
           onDelete={deleteCard}
+          onDeleteRequest={openConfirm}
         />
       </main>
 
@@ -84,7 +85,6 @@ function App() {
           categories={categories}
           loading={loading}
           onSubmit={handleModalSubmit}
-          onDelete={openConfirm}
           onClose={closeModal}
         />
       )}
