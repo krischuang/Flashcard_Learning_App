@@ -84,8 +84,16 @@ function App() {
           categories={categories}
           loading={loading}
           onSubmit={handleModalSubmit}
-          onDelete={deleteCard}
+          onDelete={openConfirm}
           onClose={closeModal}
+        />
+      )}
+
+      {confirmState.open && (
+        <ConfirmDialog
+          loading={loading}
+          onConfirm={() => deleteCard(confirmState.cardId)}
+          onCancel={closeConfirm}
         />
       )}
 
